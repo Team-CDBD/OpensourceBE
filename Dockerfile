@@ -9,6 +9,7 @@ RUN ./gradlew build --no-daemon -x test || return 0
 
 # 전체 소스 복사 및 JAR 빌드 (테스트 제외)
 COPY . .
+RUN chmod +x ./gradlew
 RUN ./gradlew bootJar --no-daemon -x test
 
 # 2단계: 실행 스테이지

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 레이어드 아키텍쳐를 위한 테스트 코드로 추후 내용 작성되면 삭제 해주세요.
  */
-@Tag(name = "test", description = "스웨거 test")
+@Tag(name = "Test", description = "테스트용 API 컨트롤러")
 @RestController
 @RequestMapping("/api/v1")
 public class TestController {
@@ -20,7 +20,7 @@ public class TestController {
 	}
 
 	@Operation(summary = "test", description = "Operation 테스트")
-	@GetMapping("/posts")
+	@GetMapping("/test")
 	public String getPosts() {
 		return "succ";
 	}

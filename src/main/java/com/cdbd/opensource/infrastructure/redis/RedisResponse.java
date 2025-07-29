@@ -1,7 +1,8 @@
 package com.cdbd.opensource.infrastructure.redis;
 
-public record RedisRequest(
+public record RedisResponse(
         String key,
-        Object value
+        Object value,
+        Duration ttl
 ) {
 }

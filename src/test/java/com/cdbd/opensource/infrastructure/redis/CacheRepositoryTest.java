@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.time.Duration;
@@ -22,6 +23,9 @@ import static org.mockito.Mockito.when;
 class CacheRepositoryTest {
     @Mock
     private ValueOperations<String, Object> valueOps;
+
+    @Mock
+    private RedisTemplate<String, Object> redisTemplate;
 
     @InjectMocks
     private CacheRepository cacheRepository;
@@ -101,5 +105,33 @@ class CacheRepositoryTest {
         // then
         assertThat(result).isEmpty();
         verify(valueOps).get(expectedKey);
+    }
+
+    @Test
+    void delete_ShouldDeleteCacheWithCorrectKey() {
+        // given
+        when(valueOps.getOperations()).thenReturn(redisTemplate);
+        when(redisTemplate.delete(expectedKey)).thenReturn(true);
+
+        // when
+        cacheRepository.delete(testRequest);
+
+        // then
+        verify(valueOps).getOperations();
+        verify(redisTemplate).delete(expectedKey);
+    }
+
+    @Test
+    void delete_WhenDataDoesNotExist_ShouldStillCallDelete() {
+        // given
+        when(valueOps.getOperations()).thenReturn(redisTemplate);
+        when(redisTemplate.delete(expectedKey)).thenReturn(false);
+
+        // when
+        cacheRepository.delete(testRequest);
+
+        // then
+        verify(valueOps).getOperations();
+        verify(redisTemplate).delete(expectedKey);
     }
 }

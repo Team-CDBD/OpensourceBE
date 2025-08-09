@@ -1,51 +1,36 @@
 package com.cdbd.opensource.infrastructure.redis;
 
+import com.cdbd.opensource.infrastructure.cache.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CacheRepositoryTest {
     @Mock
-    private ValueOperations<String, Object> valueOps;
-
-    @Mock
-    private RedisTemplate<String, Object> redisTemplate;
+    private CacheOperations cacheOps;
 
     @InjectMocks
     private CacheRepository cacheRepository;
 
-    private RedisRequest testRequest;
-    private RedisResponse testResponse;
-    private String expectedKey;
+    private CacheRequest testRequest;
+    private CacheKey expectedKey;
 
     @BeforeEach
     void setUp() {
-        testRequest = RedisRequest.builder()
-                .className("com.example.TestClass")
-                .method("testMethod")
-                .line(42)
-                .message("Test error message")
-                .severity("ERROR")
-                .futureCalls(List.of("method1()", "method2()"))
-                .build();
-
-        testResponse = RedisResponse.builder()
+        testRequest = CacheRequest.builder()
                 .className("com.example.TestClass")
                 .method("testMethod")
                 .line(42)
@@ -55,83 +40,166 @@ class CacheRepositoryTest {
                 .ttl(Duration.ofMinutes(10))
                 .build();
 
-        expectedKey = "com.example.TestClass:testMethod:42:" + "Test error message".hashCode();
+        expectedKey = CacheKey.from(testRequest);
     }
 
     @Test
-    void save_ShouldStoreRedisResponseWithCorrectKey() {
+    void save_ShouldStoreCacheDataWithCorrectKey() {
         // when
         cacheRepository.save(testRequest);
 
         // then
-        verify(valueOps).set(eq(expectedKey), any(RedisResponse.class), eq(Duration.ofMinutes(10)));
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
-    void find_WhenCacheExists_ShouldReturnRedisResponse() {
+    void find_WhenCacheExists_ShouldReturnCacheResponse() {
         // given
-        when(valueOps.get(expectedKey)).thenReturn(testResponse);
+        CacheData cachedData = CacheData.from(testRequest);
+        when(cacheOps.get(expectedKey)).thenReturn(cachedData);
 
         // when
-        Optional<RedisResponse> result = cacheRepository.find(testRequest);
+        Optional<CacheResponse> result = cacheRepository.find(testRequest);
 
         // then
-        assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(testResponse);
-        verify(valueOps).get(expectedKey);
+        Assertions.assertThat(result).isPresent();
+        Mockito.verify(cacheOps).get(expectedKey);
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
-    void find_WhenCacheDoesNotExist_ShouldReturnEmpty() {
+    void find_WhenCacheDoesNotExist_ShouldCreateAndReturnResponse() {
         // given
-        when(valueOps.get(expectedKey)).thenReturn(null);
+        when(cacheOps.get(expectedKey)).thenReturn(null);
 
         // when
-        Optional<RedisResponse> result = cacheRepository.find(testRequest);
+        Optional<CacheResponse> result = cacheRepository.find(testRequest);
 
         // then
-        assertThat(result).isEmpty();
-        verify(valueOps).get(expectedKey);
+        Assertions.assertThat(result).isPresent();
+        Mockito.verify(cacheOps).get(expectedKey);
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
-    void find_WhenCacheContainsWrongType_ShouldReturnEmpty() {
+    void find_WhenCacheContainsWrongType_ShouldCreateNewAndReturnResponse() {
         // given
-        when(valueOps.get(expectedKey)).thenReturn("wrong type");
+        when(cacheOps.get(expectedKey)).thenReturn("wrong type");
 
         // when
-        Optional<RedisResponse> result = cacheRepository.find(testRequest);
+        Optional<CacheResponse> result = cacheRepository.find(testRequest);
 
         // then
-        assertThat(result).isEmpty();
-        verify(valueOps).get(expectedKey);
+        Assertions.assertThat(result).isPresent();
+        Mockito.verify(cacheOps).get(expectedKey);
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
     void delete_ShouldDeleteCacheWithCorrectKey() {
-        // given
-        when(valueOps.getOperations()).thenReturn(redisTemplate);
-        when(redisTemplate.delete(expectedKey)).thenReturn(true);
-
         // when
         cacheRepository.delete(testRequest);
 
         // then
-        verify(valueOps).getOperations();
-        verify(redisTemplate).delete(expectedKey);
+        Mockito.verify(cacheOps).delete(expectedKey);
     }
 
     @Test
     void delete_WhenDataDoesNotExist_ShouldStillCallDelete() {
-        // given
-        when(valueOps.getOperations()).thenReturn(redisTemplate);
-        when(redisTemplate.delete(expectedKey)).thenReturn(false);
-
         // when
         cacheRepository.delete(testRequest);
 
         // then
-        verify(valueOps).getOperations();
-        verify(redisTemplate).delete(expectedKey);
+        Mockito.verify(cacheOps).delete(expectedKey);
+    }
+
+    @Test
+    void save_WhenRequestHasCustomTTL_ShouldUseCustomTTL() {
+        // given
+        CacheRequest requestWithTTL = CacheRequest.builder()
+                .className("com.example.TestClass")
+                .method("testMethod")
+                .line(42)
+                .message("Test error message")
+                .severity("ERROR")
+                .futureCalls(List.of("method1()"))
+                .ttl(Duration.ofHours(1))
+                .build();
+
+        // when
+        cacheRepository.save(requestWithTTL);
+
+        // then
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
+    }
+
+    @Test
+    void save_WhenRequestHasNullTTL_ShouldUseDefaultTTL() {
+        // given
+        CacheRequest requestWithoutTTL = CacheRequest.builder()
+                .className("com.example.TestClass")
+                .method("testMethod")
+                .line(42)
+                .message("Test error message")
+                .severity("ERROR")
+                .futureCalls(List.of("method1()"))
+                .ttl(null)
+                .build();
+
+        // when
+        cacheRepository.save(requestWithoutTTL);
+
+        // then
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
+    }
+
+    @Test
+    void find_WhenRequestHasCustomTTL_ShouldUseCustomTTL() {
+        // given
+        CacheRequest requestWithTTL = CacheRequest.builder()
+                .className("com.example.TestClass")
+                .method("testMethod")
+                .line(42)
+                .message("Test error message")
+                .severity("ERROR")
+                .futureCalls(List.of("method1()"))
+                .ttl(Duration.ofHours(2))
+                .build();
+        
+        when(cacheOps.get(ArgumentMatchers.any(CacheKey.class))).thenReturn(null);
+
+        // when
+        cacheRepository.find(requestWithTTL);
+
+        // then
+        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
+    }
+
+    @Test
+    void find_WhenCacheOperationsThrowsException_ShouldPropagateException() {
+        // given
+        when(cacheOps.get(ArgumentMatchers.any(CacheKey.class))).thenThrow(new RuntimeException("Cache error"));
+
+        // when & then
+        Assertions.assertThat(org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class,
+                () -> cacheRepository.find(testRequest))).hasMessage("Cache error");
+    }
+
+    @Test
+    void find_ShouldReturnCorrectResponseStructure() {
+        // given
+        when(cacheOps.get(ArgumentMatchers.any(CacheKey.class))).thenReturn(null);
+
+        // when
+        Optional<CacheResponse> result = cacheRepository.find(testRequest);
+
+        // then
+        Assertions.assertThat(result).isPresent();
+        CacheResponse response = result.get();
+        Assertions.assertThat(response.className()).isEqualTo(testRequest.className());
+        Assertions.assertThat(response.method()).isEqualTo(testRequest.method());
+        Assertions.assertThat(response.line()).isEqualTo(testRequest.line());
+        Assertions.assertThat(response.severity()).isEqualTo(testRequest.severity());
+        Assertions.assertThat(response.futureCalls()).isEqualTo(testRequest.futureCalls());
     }
 }

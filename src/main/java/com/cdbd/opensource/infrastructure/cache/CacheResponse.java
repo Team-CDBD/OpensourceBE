@@ -1,18 +1,16 @@
-package com.cdbd.opensource.infrastructure.redis;
+package com.cdbd.opensource.infrastructure.cache;
 
 import lombok.Builder;
 
-import java.time.Duration;
 import java.util.List;
 
 @Builder
-public record RedisRequest(
+public record CacheResponse(
         String className,
         String method,
         int line,
         String message,
         String severity,
-        List<String> futureCalls,
-        Duration ttl
+        List<String> futureCalls
 ) {
 }

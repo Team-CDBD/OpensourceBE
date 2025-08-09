@@ -1,7 +1,7 @@
 package com.cdbd.opensource.infrastructure.redis;
 
+import com.cdbd.opensource.infrastructure.cache.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
@@ -12,44 +12,33 @@ import java.util.Optional;
 public class CacheRepository {
     private static final Duration TTL = Duration.ofDays(30);
 
-    private final ValueOperations<String, Object> valueOps;
+    private final CacheOperations cacheOps;
 
-    public void save(RedisRequest request) {
-        String key = generateKey(request);
+    public void save(CacheRequest request) {
+        CacheKey key = CacheKey.from(request);
+        CacheData data = CacheData.from(request);
         Duration ttl = Optional.ofNullable(request.ttl()).orElse(TTL);
-        RedisResponse response = RedisResponse.builder()
-                .className(request.className())
-                .method(request.method())
-                .line(request.line())
-                .message(request.message())
-                .severity(request.severity())
-                .futureCalls(request.futureCalls())
-                .ttl(ttl)
-                .build();
-        valueOps.set(key, response, TTL);
+        CacheDTO dto = new CacheDTO(key, data, ttl);
+        cacheOps.set(dto);
     }
 
-    public Optional<RedisResponse> find(RedisRequest request) {
-        String key = generateKey(request);
-        Object cached = valueOps.get(key);
+    public Optional<CacheResponse> find(CacheRequest request) {
+        CacheKey key = CacheKey.from(request);
+        Duration ttl = Optional.ofNullable(request.ttl()).orElse(TTL);
 
-        if (cached instanceof RedisResponse cachedResponse) {
-            return Optional.of(cachedResponse);
-        }
-        return Optional.empty();
+        CacheData data = Optional.ofNullable(cacheOps.get(key))
+                .filter(CacheData.class::isInstance)
+                .map(CacheData.class::cast)
+                .orElseGet(() -> CacheData.from(request));
+
+        CacheDTO dto = new CacheDTO(key, data, ttl);
+        cacheOps.set(dto);
+        return Optional.of(dto.toCacheResponse());
     }
 
-    public void delete(RedisRequest request) {
-        String key = generateKey(request);
+    public void delete(CacheRequest request) {
+        CacheKey key = CacheKey.from(request);
 
-        valueOps.getOperations().delete(key);
-    }
-
-    private String generateKey(RedisRequest request) {
-        return String.format("%s:%s:%d:%s", 
-                request.className(), 
-                request.method(), 
-                request.line(), 
-                request.message().hashCode());
+        cacheOps.delete(key);
     }
 }

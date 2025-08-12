@@ -1,16 +1,16 @@
 package com.cdbd.opensource.application;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class DynamicMessageListener {
 
     @Async
-    public void listen(String topic, String message) {
+    public void send(String topic, Object eventLog) {
 
-    }
-
-    public void send(String topic, String string) {
     }
 }

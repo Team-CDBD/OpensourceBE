@@ -4,12 +4,12 @@ import com.cdbd.opensource.infrastructure.DynamicSubscriptionRepository;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.Duration;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Transactional(readOnly = true)
@@ -17,7 +17,7 @@ public class DynamicMessageSubscribeHelper {
 
     private final DynamicSubscriptionRepository dynamicSubscriptionRepository;
     private final DynamicMessageListener dynamicMessageListener;
-    private final KafkaConsumer<String, Object> mailKafkaConsumer;
+    private final KafkaConsumer<String, Object> kafkaConsumer;
 
     private KafkaListener listener;
     private final Set<String> topics = ConcurrentHashMap.newKeySet();
@@ -25,18 +25,18 @@ public class DynamicMessageSubscribeHelper {
     public DynamicMessageSubscribeHelper(
             DynamicSubscriptionRepository dynamicSubscriptionRepository,
             DynamicMessageListener dynamicMessageListener,
-            KafkaConsumer<String, Object> mailKafkaConsumer
+            KafkaConsumer<String, Object> kafkaConsumer
     ) {
         this.dynamicSubscriptionRepository = dynamicSubscriptionRepository;
         this.dynamicMessageListener = dynamicMessageListener;
-        this.mailKafkaConsumer = mailKafkaConsumer;
+        this.kafkaConsumer = kafkaConsumer;
     }
 
     @PostConstruct
     public void run() {
         Set<String> allTopics = dynamicSubscriptionRepository.findAllTopics();
         topics.addAll(allTopics);
-        listener = new KafkaListener(mailKafkaConsumer, dynamicMessageListener, topics);
+        listener = new KafkaListener(kafkaConsumer, dynamicMessageListener, topics);
         new Thread(listener).start();
     }
 
@@ -45,8 +45,8 @@ public class DynamicMessageSubscribeHelper {
         if (listener != null) {
             listener.stop();
         }
-        if (mailKafkaConsumer != null) {
-            mailKafkaConsumer.close();
+        if (kafkaConsumer != null) {
+            kafkaConsumer.close();
         }
     }
 
@@ -56,18 +56,18 @@ public class DynamicMessageSubscribeHelper {
 
     private static class KafkaListener implements Runnable {
 
-        private final KafkaConsumer<String, Object> mailKafkaConsumer;
+        private final KafkaConsumer<String, Object> kafkaConsumer;
         private final DynamicMessageListener dynamicMessageListener;
         private final Set<String> topics;
 
         private volatile boolean isRunning = false;
 
         public KafkaListener(
-                KafkaConsumer<String, Object> mailKafkaConsumer,
+                KafkaConsumer<String, Object> kafkaConsumer,
                 DynamicMessageListener dynamicMessageListener,
                 Set<String> topics
         ) {
-            this.mailKafkaConsumer = mailKafkaConsumer;
+            this.kafkaConsumer = kafkaConsumer;
             this.dynamicMessageListener = dynamicMessageListener;
             this.topics = topics;
         }
@@ -86,11 +86,11 @@ public class DynamicMessageSubscribeHelper {
                         continue;
                     }
 
-                    mailKafkaConsumer.subscribe(topics);
+                    kafkaConsumer.subscribe(topics);
                     Duration pollTimeout = Duration.ofSeconds(5);
-                    mailKafkaConsumer.poll(pollTimeout)
+                    kafkaConsumer.poll(pollTimeout)
                             .forEach(record -> {
-                                dynamicMessageListener.send(record.topic(), record.value().toString());
+                                dynamicMessageListener.send(record.topic(), record.value());
                             });
 
                 } catch (Exception e) {

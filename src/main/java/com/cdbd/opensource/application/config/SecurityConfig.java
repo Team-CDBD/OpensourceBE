@@ -1,4 +1,4 @@
-package com.cdbd.opensource.presentation.config;
+package com.cdbd.opensource.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

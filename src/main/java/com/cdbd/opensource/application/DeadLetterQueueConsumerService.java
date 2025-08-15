@@ -33,20 +33,19 @@ public class DeadLetterQueueConsumerService {
             System.err.println("Failed to process message: " + e.getMessage());
 
             // 처리 실패 시 DLQ로 메시지 전송
-            sendToDlq("kafka.main.topic", message, e.getMessage());
+            sendToDlq(message, e.getMessage());
         }
     }
 
-    private void sendToDlq(String originalTopic, String message, String failureReason) {
+    private void sendToDlq(String message, String failureReason) {
         try {
-            FailedEventMessage failedMessage = new FailedEventMessage();
-            // FailedEventMessage 필드 값 설정 (Lombok 사용 시 생략)
-            // ...
-            failedMessage.setOriginalTopic(originalTopic);
-            failedMessage.setMessage(message);
-            failedMessage.setRetryCount(0);
-            failedMessage.setFailureReason(failureReason);
-            failedMessage.setFailureTimestamp(System.currentTimeMillis());
+            FailedEventMessage failedMessage = FailedEventMessage.builder()
+                    .originalTopic("kafka.main.topic")
+                    .message(message)
+                    .retryCount(0)
+                    .failureReason(failureReason)
+                    .failureTimestamp(System.currentTimeMillis())
+                    .build();
 
             kafkaTemplate.send(dlqTopic, FailedEventMessage.toJson(failedMessage));
             System.out.println("Message sent to DLQ topic: " + dlqTopic);

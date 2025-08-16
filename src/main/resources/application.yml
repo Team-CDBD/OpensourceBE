@@ -26,6 +26,17 @@ spring:
     task:
       scheduling:
         enabled: true
+  ai:
+    openai:
+      base-url: https://api.openai.com
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.0
+          max-tokens: 300
+          presence-penalty: 0.0
+          frequency-penalty: 0.0
 
 springdoc:
   api-docs:

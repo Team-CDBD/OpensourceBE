@@ -13,9 +13,7 @@ CREATE TABLE event_log (
 -- FutureCall 테이블
 CREATE TABLE future_call (
     id BIGSERIAL PRIMARY KEY,
-    call_name VARCHAR(255),
-    event_log_id BIGINT,
-    CONSTRAINT fk_future_call_event_log FOREIGN KEY (event_log_id) REFERENCES event_log(id)
+    call_name VARCHAR(255)
 );
 
 -- 인덱스 생성

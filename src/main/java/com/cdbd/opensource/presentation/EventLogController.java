@@ -1,0 +1,31 @@
+package com.cdbd.opensource.presentation;
+
+import com.cdbd.opensource.application.EventLogFacade;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+public class EventLogController {
+    private final EventLogFacade eventLogFacade;
+
+    @GetMapping("/tables")
+    public ResponseEntity<PageResponseDto> getEventLogs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        PageRequestDto pageRequest = new PageRequestDto();
+        pageRequest.setPage(page);
+        pageRequest.setSize(size);
+        pageRequest.setSortBy(sortBy);
+        pageRequest.setDirection(direction);
+
+        PageResponseDto responseDto = new PageResponseDto();
+        return ResponseEntity.ok(responseDto);
+    }
+}

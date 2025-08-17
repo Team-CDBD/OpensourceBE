@@ -21,6 +21,7 @@ public class EventLogFacade {
         if (log.getSeverity().equals("ERROR")) {
             LLMResult result = llmClient.analyzeEventLog(log);
             log = new EventLog(
+                    log.getId(),
                     log.getClassName(),
                     log.getMethod(),
                     log.getLine(),

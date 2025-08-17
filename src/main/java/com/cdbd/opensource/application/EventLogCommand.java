@@ -11,6 +11,7 @@ public record EventLogCommand (
     public EventLog toEventLog() {
         EventLog log = (EventLog) eventLog;
         return new EventLog(
+                log.getId(),
                 log.getClassName(),
                 log.getMethod(),
                 log.getLine(),

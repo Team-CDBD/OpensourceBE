@@ -17,7 +17,7 @@ public class DeadLetterQueueConsumerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @KafkaListener(topics = "${kafka.main.topic}", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${spring.kafka.main.topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void listenMainTopic(String message) {
         System.out.println("Received message from main topic: " + message);
 

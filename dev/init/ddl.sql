@@ -22,6 +22,8 @@
 CREATE TABLE topic (
                        id BIGINT NOT NULL,
                        topic VARCHAR(255),
+                       partition_count INT,
+                       description TEXT,
                        PRIMARY KEY (id)
 );
 

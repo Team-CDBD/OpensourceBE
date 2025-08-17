@@ -10,7 +10,7 @@ public class SpringAiConfig {
 
   @Bean
   public ChatClient chatClient(ChatModel chatModel) {
-    return ChatClient.create(chatModel);
+    return ChatClient.builder(chatModel).build();
   }
 
 }

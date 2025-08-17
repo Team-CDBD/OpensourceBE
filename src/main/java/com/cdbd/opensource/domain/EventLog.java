@@ -10,6 +10,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 public class EventLog {
+    private Long id;
     private String className;
     private String method;
     private int line;

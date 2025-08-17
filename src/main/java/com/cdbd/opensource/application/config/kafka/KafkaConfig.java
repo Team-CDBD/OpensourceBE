@@ -1,4 +1,4 @@
-package com.cdbd.opensource.config.kafka;
+package com.cdbd.opensource.application.config.kafka;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;

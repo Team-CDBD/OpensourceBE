@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class DynamicMessageListener {
+    private final EventLogService eventLogService;
 
     @Async
     public void send(String topic, Object eventLog) {
-
+        EventLogCommand command = EventLogCommand.builder().topic(topic).eventLog(eventLog).build();
+        eventLogService.save(command);
     }
 }

@@ -33,6 +33,11 @@ public class AiRuntimeManager {
 
   public ChatClient client() { return clientRef.get(); }
 
+  public synchronized void applyUserInputs(String apiKey, Integer maxTokens, Double temperature) {
+    var merged = settingsRef.get().mergeUserInputs(apiKey, maxTokens, temperature);
+    apply(merged);
+  }
+
   private void apply(AiRuntimeSettings s) {
     OpenAiApi api = OpenAiApi.builder().baseUrl(s.baseUrl()).apiKey(s.apiKey()).build();
     OpenAiChatOptions options = OpenAiChatOptions.builder()

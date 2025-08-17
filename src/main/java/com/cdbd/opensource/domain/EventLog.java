@@ -17,4 +17,5 @@ public class EventLog {
     private String severity;
     private List<String> futureCalls;
     private String topic;
+    private String result;
 }

@@ -43,4 +43,14 @@ public class TopicRepositoryImpl implements TopicRepository {
                 .totalPages(logEntityPage.getTotalPages())
                 .build();
     }
+
+    @Override
+    public void update(Topic topic) {
+        TopicEntity entity = new TopicEntity();
+        entity.setId(topic.getId());
+        entity.setTopic(topic.getTopic());
+        entity.setPartitionCount(topic.getPartitionCount());
+        entity.setDescription(topic.getDescription());
+        topicRepository.save(entity);
+    }
 }

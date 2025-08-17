@@ -4,16 +4,15 @@ import com.cdbd.opensource.application.TopicFacade;
 import com.cdbd.opensource.domain.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/config/kafka")
 public class TopicController {
     private final TopicFacade facade;
 
-    @GetMapping
+    @GetMapping("/topics")
     public ResponseEntity<PageResponseDto<Topic>> getTopics(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -28,5 +27,11 @@ public class TopicController {
                 .build();
 
         return ResponseEntity.ok(facade.getTopics(pageRequest));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity updateTopic(@RequestBody TopicRequest request) {
+        facade.updateTopic(request.toTopicCommand());
+        return ResponseEntity.ok().build();
     }
 }

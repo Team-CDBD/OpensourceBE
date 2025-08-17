@@ -15,4 +15,8 @@ public class TopicFacade {
     public PageResponseDto<Topic> getTopics(PageRequestDto pageRequest) {
         return service.getTopics(pageRequest);
     }
+
+    public void updateTopic(TopicCommand topicCommand) {
+        service.updateTopic(topicCommand.toTopic());
+    }
 }

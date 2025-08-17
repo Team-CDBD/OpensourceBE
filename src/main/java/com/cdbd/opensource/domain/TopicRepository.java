@@ -8,4 +8,6 @@ import java.util.Set;
 public interface TopicRepository {
     Set<String> findAllTopics();
     PageResponseDto<Topic> getTopics(PageRequestDto pageRequest);
+
+    void update(Topic topic);
 }

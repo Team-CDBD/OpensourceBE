@@ -12,4 +12,8 @@ public class TopicService {
     public PageResponseDto<Topic> getTopics(PageRequestDto pageRequest) {
         return repository.getTopics(pageRequest);
     }
+
+    public void updateTopic(Topic topic) {
+        repository.update(topic);
+    }
 }

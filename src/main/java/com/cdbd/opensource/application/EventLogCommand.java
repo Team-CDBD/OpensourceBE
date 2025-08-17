@@ -17,7 +17,8 @@ public record EventLogCommand (
                 log.getMessage(),
                 log.getSeverity(),
                 log.getFutureCalls(),
-                topic
+                topic,
+                ""
         );
     }
 }

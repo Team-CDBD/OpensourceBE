@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,5 +53,21 @@ public class TopicRepositoryImpl implements TopicRepository {
         entity.setPartitionCount(topic.getPartitionCount());
         entity.setDescription(topic.getDescription());
         topicRepository.save(entity);
+    }
+
+    @Override
+    public void save(Topic topic) {
+        TopicEntity entity = new TopicEntity();
+        entity.setId(topic.getId());
+        entity.setTopic(topic.getTopic());
+        entity.setPartitionCount(topic.getPartitionCount());
+        entity.setDescription(topic.getDescription());
+        topicRepository.save(entity);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Optional<TopicEntity> entity = topicRepository.findById(id);
+        topicRepository.delete(entity.get());
     }
 }

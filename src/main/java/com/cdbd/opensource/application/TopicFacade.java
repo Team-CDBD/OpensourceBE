@@ -19,4 +19,12 @@ public class TopicFacade {
     public void updateTopic(TopicCommand topicCommand) {
         service.updateTopic(topicCommand.toTopic());
     }
+
+    public void createTopic(TopicCommand topicCommand) {
+        service.createTopic(topicCommand.toTopic());
+    }
+
+    public void deleteTopic(Long id) {
+        service.deleteTopic(id);
+    }
 }

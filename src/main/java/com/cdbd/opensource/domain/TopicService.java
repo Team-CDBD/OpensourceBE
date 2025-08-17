@@ -16,4 +16,12 @@ public class TopicService {
     public void updateTopic(Topic topic) {
         repository.update(topic);
     }
+
+    public void createTopic(Topic topic) {
+        repository.save(topic);
+    }
+
+    public void deleteTopic(Long id) {
+        repository.delete(id);
+    }
 }

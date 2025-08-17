@@ -10,4 +10,8 @@ public interface TopicRepository {
     PageResponseDto<Topic> getTopics(PageRequestDto pageRequest);
 
     void update(Topic topic);
+
+    void save(Topic topic);
+
+    void delete(Long id);
 }

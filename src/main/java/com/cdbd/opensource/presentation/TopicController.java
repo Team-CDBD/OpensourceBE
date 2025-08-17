@@ -34,4 +34,16 @@ public class TopicController {
         facade.updateTopic(request.toTopicCommand());
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/create")
+    public ResponseEntity createTopic(@RequestBody TopicRequest request) {
+        facade.createTopic(request.toTopicCommand());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteTopic(Long id) {
+        facade.deleteTopic(id);
+        return ResponseEntity.ok().build()
+    }
 }

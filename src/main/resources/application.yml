@@ -4,7 +4,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: admin
     password: admin
-
+  data:
+      redis:
+        host: localhost
+        port: 6379
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,6 +16,32 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    main:
+      topic: meerkat
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: main-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    task:
+      scheduling:
+        enabled: true
+  ai:
+    openai:
+      base-url: https://api.openai.com
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.0
+          max-tokens: 500
+          presence-penalty: 0.0
+          frequency-penalty: 0.0
 
 springdoc:
   api-docs:
@@ -24,3 +53,6 @@ springdoc:
   default-consumes-media-type: application/json
   packages-to-scan: com.cdbd.opensource.presentation
 
+kafka:
+  dlq:
+    topic: dlq_event_logs

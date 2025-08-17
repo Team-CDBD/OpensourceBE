@@ -10,6 +10,14 @@ public record EventLogCommand (
 ) {
     public EventLog toEventLog() {
         EventLog log = (EventLog) eventLog;
-        return new EventLog(log.getClassName(), log.getMethod(), log.getLine(), log.getMessage(), log.getSeverity(), log.getFutureCalls(), topic);
+        return new EventLog(
+                log.getClassName(),
+                log.getMethod(),
+                log.getLine(),
+                log.getMessage(),
+                log.getSeverity(),
+                log.getFutureCalls(),
+                topic
+        );
     }
 }

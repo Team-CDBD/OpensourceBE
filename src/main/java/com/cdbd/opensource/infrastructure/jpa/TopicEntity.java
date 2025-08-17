@@ -1,5 +1,6 @@
 package com.cdbd.opensource.infrastructure.jpa;
 
+import com.cdbd.opensource.domain.Topic;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,22 @@ public class TopicEntity {
 
     @Column(name = "topic")
     private String topic;
+
+    @Column(name = "partition_count")
+    private int partitionCount;
+
+    @Column(
+            name = "description",
+            columnDefinition = "TEXT"
+    )
+    private String description;
+
+    public Topic toTopic() {
+        return new Topic(
+                id,
+                topic,
+                partitionCount,
+                description
+        );
+    }
 }

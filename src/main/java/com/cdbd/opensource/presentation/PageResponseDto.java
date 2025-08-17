@@ -1,14 +1,10 @@
 package com.cdbd.opensource.presentation;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Builder
 public class PageResponseDto<T> {
     private List<T> content;
     private int currentPage;

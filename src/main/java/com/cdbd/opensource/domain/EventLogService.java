@@ -1,5 +1,7 @@
 package com.cdbd.opensource.domain;
 
+import com.cdbd.opensource.presentation.PageRequestDto;
+import com.cdbd.opensource.presentation.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +12,9 @@ public class EventLogService {
 
     public void save(EventLog log) {
         repository.save(log);
+    }
+
+    public PageResponseDto<EventLog> getEventLogs(PageRequestDto pageRequest) {
+        return repository.getEventLogs(pageRequest);
     }
 }

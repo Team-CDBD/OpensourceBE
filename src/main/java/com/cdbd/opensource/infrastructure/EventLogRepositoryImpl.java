@@ -5,9 +5,16 @@ import com.cdbd.opensource.domain.EventLogRepository;
 import com.cdbd.opensource.infrastructure.jpa.EventLogEntity;
 import com.cdbd.opensource.infrastructure.jpa.FutureCallEntity;
 import com.cdbd.opensource.infrastructure.jpa.JpaEventLogRepository;
+import com.cdbd.opensource.presentation.PageRequestDto;
+import com.cdbd.opensource.presentation.PageResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -33,5 +40,22 @@ public class EventLogRepositoryImpl implements EventLogRepository {
                 .build();
 
         jpaRepository.save(entity);
+    }
+
+    @Override
+    public PageResponseDto<EventLog> getEventLogs(PageRequestDto pageRequest) {
+        Sort.Direction direction = "asc".equalsIgnoreCase(pageRequest.getDirection()) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize(), Sort.by(direction, pageRequest.getSortBy()));
+        Page<EventLogEntity> logEntityPage = jpaRepository.findAll(pageable);
+
+        List<EventLog> logList = logEntityPage.getContent().stream().map(EventLogEntity::toEventLog).toList();
+
+        return new PageResponseDto<EventLog>(
+                logList,
+                logEntityPage.getNumber(),
+                logEntityPage.getSize(),
+                logEntityPage.getTotalElements(),
+                logEntityPage.getTotalPages()
+        );
     }
 }

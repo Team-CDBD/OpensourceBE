@@ -19,13 +19,14 @@ public class EventLogController {
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        PageRequestDto pageRequest = new PageRequestDto();
-        pageRequest.setPage(page);
-        pageRequest.setSize(size);
-        pageRequest.setSortBy(sortBy);
-        pageRequest.setDirection(direction);
+        PageRequestDto pageRequest = PageRequestDto.builder()
+                .page(page)
+                .size(size)
+                .sortBy(sortBy)
+                .direction(direction)
+                .build();
 
-        PageResponseDto responseDto = new PageResponseDto();
+        PageResponseDto responseDto = eventLogFacade.getEventLogs(pageRequest);
         return ResponseEntity.ok(responseDto);
     }
 }

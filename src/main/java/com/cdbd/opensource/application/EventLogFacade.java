@@ -4,6 +4,8 @@ import com.cdbd.opensource.domain.EventLog;
 import com.cdbd.opensource.domain.EventLogService;
 import com.cdbd.opensource.infrastructure.llm.LLMClient;
 import com.cdbd.opensource.infrastructure.llm.LLMResult;
+import com.cdbd.opensource.presentation.PageRequestDto;
+import com.cdbd.opensource.presentation.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,9 @@ public class EventLogFacade {
             );
         }
         service.save(log);
+    }
+
+    public PageResponseDto<EventLog> getEventLogs(PageRequestDto pageRequest) {
+        return service.getEventLogs(pageRequest);
     }
 }

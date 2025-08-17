@@ -1,5 +1,6 @@
 package com.cdbd.opensource.infrastructure.jpa;
 
+import com.cdbd.opensource.domain.EventLog;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -55,4 +56,19 @@ public class EventLogEntity {
             columnDefinition = "TEXT"
     )
     private String result;
+
+    public EventLog toEventLog() {
+        List<String> futureCallStrings = futureCalls.stream().map(FutureCallEntity::getCallName).toList();
+
+        return new EventLog(
+                className,
+                method,
+                line,
+                message,
+                severity,
+                futureCallStrings,
+                topic,
+                result
+        );
+    }
 }

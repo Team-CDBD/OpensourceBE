@@ -1,6 +1,7 @@
 package com.cdbd.opensource.presentation;
 
 import com.cdbd.opensource.application.EventLogFacade;
+import com.cdbd.opensource.domain.EventLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ public class EventLogController {
     private final EventLogFacade eventLogFacade;
 
     @GetMapping("/tables")
-    public ResponseEntity<PageResponseDto> getEventLogs(
+    public ResponseEntity<PageResponseDto<EventLog>> getEventLogs(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -26,7 +27,7 @@ public class EventLogController {
                 .direction(direction)
                 .build();
 
-        PageResponseDto responseDto = eventLogFacade.getEventLogs(pageRequest);
+        PageResponseDto<EventLog> responseDto = eventLogFacade.getEventLogs(pageRequest);
         return ResponseEntity.ok(responseDto);
     }
 }

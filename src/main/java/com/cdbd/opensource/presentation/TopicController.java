@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:3000") // 이 컨트롤러의 모든 메서드에 적용
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/config/kafka")
@@ -26,6 +27,8 @@ public class TopicController {
                 .direction(direction)
                 .build();
 
+        System.out.println(pageRequest);
+
         return ResponseEntity.ok(facade.getTopics(pageRequest));
     }
 
@@ -44,6 +47,13 @@ public class TopicController {
     @DeleteMapping("/delete")
     public ResponseEntity deleteTopic(Long id) {
         facade.deleteTopic(id);
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{topicName}/test-connection")
+    public ResponseEntity<ConnectionTestResult> testTopicConnection(@PathVariable String topicName) {
+        ConnectionTestResult result = facade.testTopicConnection(topicName);
+        return ResponseEntity.ok(result);
+    }
+
 }

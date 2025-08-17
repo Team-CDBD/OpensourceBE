@@ -2,6 +2,7 @@ package com.cdbd.opensource.application;
 
 import com.cdbd.opensource.domain.Topic;
 import com.cdbd.opensource.domain.TopicService;
+import com.cdbd.opensource.presentation.ConnectionTestResult;
 import com.cdbd.opensource.presentation.PageRequestDto;
 import com.cdbd.opensource.presentation.PageResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,9 @@ public class TopicFacade {
 
     public void deleteTopic(Long id) {
         service.deleteTopic(id);
+    }
+
+    public ConnectionTestResult testTopicConnection(String topicName) {
+        return service.testTopicConnection(topicName);
     }
 }

@@ -5,6 +5,7 @@ import com.cdbd.opensource.domain.EventLogRepository;
 import com.cdbd.opensource.infrastructure.jpa.EventLogEntity;
 import com.cdbd.opensource.infrastructure.jpa.FutureCallEntity;
 import com.cdbd.opensource.infrastructure.jpa.JpaEventLogRepository;
+import com.cdbd.opensource.infrastructure.jpa.JpaFutureCallRepository;
 import com.cdbd.opensource.presentation.PageRequestDto;
 import com.cdbd.opensource.presentation.PageResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -21,41 +22,69 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EventLogRepositoryImpl implements EventLogRepository {
     
-    private final JpaEventLogRepository jpaRepository;
+    private final JpaEventLogRepository jpaEventLogRepository;
+    private final JpaFutureCallRepository jpaFutureCallRepository;
     
     @Override
     public void save(EventLog eventLog) {
-        EventLogEntity entity = EventLogEntity.builder()
+        EventLogEntity eventLogEntity = EventLogEntity.builder()
                 .className(eventLog.getClassName())
                 .method(eventLog.getMethod())
                 .line(eventLog.getLine())
                 .message(eventLog.getMessage())
                 .severity(eventLog.getSeverity())
                 .topic(eventLog.getTopic())
-                .futureCalls(eventLog.getFutureCalls().stream()
-                        .map(call -> FutureCallEntity.builder()
-                                .callName(call)
-                                .build())
-                        .collect(Collectors.toList()))
+                .result(eventLog.getResult())
                 .build();
 
-        jpaRepository.save(entity);
+        EventLogEntity savedEntity = jpaEventLogRepository.save(eventLogEntity);
+
+        List<FutureCallEntity> futureCallEntities = eventLog.getFutureCalls().stream()
+                .map(call -> FutureCallEntity.builder()
+                        .callName(call)
+                        .eventLog(savedEntity) // ⭐ savedEventLog 객체 참조
+                        .build())
+                .collect(Collectors.toList());
+
+        jpaFutureCallRepository.saveAll(futureCallEntities);
     }
 
     @Override
     public PageResponseDto<EventLog> getEventLogs(PageRequestDto pageRequest) {
         Sort.Direction direction = "asc".equalsIgnoreCase(pageRequest.getDirection()) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize(), Sort.by(direction, pageRequest.getSortBy()));
-        Page<EventLogEntity> logEntityPage = jpaRepository.findAll(pageable);
+        Page<EventLogEntity> logEntityPage = jpaEventLogRepository.findAll(pageable);
 
-        List<EventLog> logList = logEntityPage.getContent().stream().map(EventLogEntity::toEventLog).toList();
+        List<EventLog> logList = logEntityPage.getContent().stream()
+                .map(logEntity -> {
+                    List<FutureCallEntity> futureCallEntities = jpaFutureCallRepository.findByEventLogId(logEntity.getId());
 
-        return new PageResponseDto<EventLog>(
-                logList,
-                logEntityPage.getNumber(),
-                logEntityPage.getSize(),
-                logEntityPage.getTotalElements(),
-                logEntityPage.getTotalPages()
-        );
+                    // FutureCallEntity의 callName만 추출하여 리스트로 변환
+                    List<String> futureCallStrings = futureCallEntities.stream()
+                            .map(FutureCallEntity::getCallName)
+                            .collect(Collectors.toList());
+
+                    // EventLogEntity와 조회한 futureCalls를 포함하여 DTO로 변환
+                    return new EventLog(
+                            logEntity.getId(),
+                            logEntity.getClassName(),
+                            logEntity.getMethod(),
+                            logEntity.getLine(),
+                            logEntity.getMessage(),
+                            logEntity.getSeverity(),
+                            futureCallStrings, // ⭐ 별도 조회한 futureCalls 목록 사용
+                            logEntity.getTopic(),
+                            logEntity.getResult()
+                    );
+                })
+                .toList();
+
+        return PageResponseDto.<EventLog>builder()
+                .content(logList)
+                .currentPage(logEntityPage.getNumber())
+                .pageSize(logEntityPage.getSize())
+                .totalElements(logEntityPage.getTotalElements())
+                .totalPages(logEntityPage.getTotalPages())
+                .build();
     }
 }

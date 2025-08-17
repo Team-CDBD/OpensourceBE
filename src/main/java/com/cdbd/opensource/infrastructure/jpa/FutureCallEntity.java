@@ -13,7 +13,11 @@ public class FutureCallEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    
+
     @Column(name = "call_name")
     private String callName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_log_id", nullable = false)
+    private EventLogEntity eventLog;
 }

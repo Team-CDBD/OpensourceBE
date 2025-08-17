@@ -5,9 +5,9 @@ import com.cdbd.opensource.domain.EventLogRepository;
 import com.cdbd.opensource.infrastructure.llm.LLMClient;
 import com.cdbd.opensource.infrastructure.llm.LLMResult;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,10 +22,10 @@ class EventLogIntegrationTest {
     @Autowired
     private EventLogFacade eventLogFacade;
 
-    @MockBean
+    @Mock
     private LLMClient llmClient;
     
-    @MockBean
+    @Mock
     private EventLogRepository eventLogRepository;
 
     @Test

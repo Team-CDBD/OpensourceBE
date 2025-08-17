@@ -18,3 +18,11 @@
 
  -- 인덱스 생성
  CREATE INDEX idx_future_call_event_log_id ON future_call(event_log_id);
+
+CREATE TABLE topic (
+                       id BIGINT NOT NULL,
+                       topic VARCHAR(255),
+                       PRIMARY KEY (id)
+);
+
+CREATE SEQUENCE topic_seq START 1 INCREMENT BY 50;

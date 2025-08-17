@@ -1,6 +1,7 @@
 package com.cdbd.opensource.application.messagequeue;
 
-import com.cdbd.opensource.infrastructure.DynamicSubscriptionRepository;
+import com.cdbd.opensource.domain.TopicRepository;
+import com.cdbd.opensource.infrastructure.TopicRepositoryImpl;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Transactional(readOnly = true)
 public class DynamicMessageSubscribeHelper {
 
-    private final DynamicSubscriptionRepository dynamicSubscriptionRepository;
+    private final TopicRepository topicRepository;
     private final DynamicMessageListener dynamicMessageListener;
     private final KafkaConsumer<String, Object> kafkaConsumer;
 
@@ -23,18 +24,18 @@ public class DynamicMessageSubscribeHelper {
     private final Set<String> topics = ConcurrentHashMap.newKeySet();
 
     public DynamicMessageSubscribeHelper(
-            DynamicSubscriptionRepository dynamicSubscriptionRepository,
+            TopicRepositoryImpl dynamicSubscriptionRepository,
             DynamicMessageListener dynamicMessageListener,
             KafkaConsumer<String, Object> kafkaConsumer
     ) {
-        this.dynamicSubscriptionRepository = dynamicSubscriptionRepository;
+        this.topicRepository = dynamicSubscriptionRepository;
         this.dynamicMessageListener = dynamicMessageListener;
         this.kafkaConsumer = kafkaConsumer;
     }
 
     @PostConstruct
     public void run() {
-        Set<String> allTopics = dynamicSubscriptionRepository.findAllTopics();
+        Set<String> allTopics = topicRepository.findAllTopics();
         topics.addAll(allTopics);
         listener = new KafkaListener(kafkaConsumer, dynamicMessageListener, topics);
         new Thread(listener).start();

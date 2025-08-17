@@ -2,7 +2,7 @@ package com.cdbd.opensource.application.messagequeue;
 
 import com.cdbd.opensource.application.EventLogFacade;
 import com.cdbd.opensource.domain.EventLog;
-import com.cdbd.opensource.infrastructure.DynamicSubscriptionRepository;
+import com.cdbd.opensource.infrastructure.TopicRepositoryImpl;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 class MessageQueueIntegrationTest {
 
     @MockBean
-    private DynamicSubscriptionRepository dynamicSubscriptionRepository;
+    private TopicRepositoryImpl dynamicSubscriptionRepository;
     
     @MockBean
     private EventLogFacade eventLogFacade;

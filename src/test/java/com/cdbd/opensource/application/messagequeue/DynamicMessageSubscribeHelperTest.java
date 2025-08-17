@@ -1,6 +1,6 @@
 package com.cdbd.opensource.application.messagequeue;
 
-import com.cdbd.opensource.infrastructure.DynamicSubscriptionRepository;
+import com.cdbd.opensource.infrastructure.TopicRepositoryImpl;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 class DynamicMessageSubscribeHelperTest {
 
     @Mock
-    private DynamicSubscriptionRepository dynamicSubscriptionRepository;
+    private TopicRepositoryImpl dynamicSubscriptionRepository;
     
     @Mock
     private DynamicMessageListener dynamicMessageListener;

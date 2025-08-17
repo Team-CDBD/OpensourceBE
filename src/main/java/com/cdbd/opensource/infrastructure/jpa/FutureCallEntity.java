@@ -16,8 +16,4 @@ public class FutureCallEntity {
     
     @Column(name = "call_name")
     private String callName;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_log_id")
-    private EventLogEntity eventLog;
 }

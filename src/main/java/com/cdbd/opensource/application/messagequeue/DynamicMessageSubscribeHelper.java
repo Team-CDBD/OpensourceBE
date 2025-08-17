@@ -1,4 +1,4 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.messagequeue;
 
 import com.cdbd.opensource.infrastructure.DynamicSubscriptionRepository;
 import org.apache.kafka.clients.consumer.KafkaConsumer;

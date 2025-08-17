@@ -1,4 +1,4 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.messagequeue;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;

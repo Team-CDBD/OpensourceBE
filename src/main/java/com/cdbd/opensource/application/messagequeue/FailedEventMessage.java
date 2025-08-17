@@ -1,4 +1,4 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.messagequeue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

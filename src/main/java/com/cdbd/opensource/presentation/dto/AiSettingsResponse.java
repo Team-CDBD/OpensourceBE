@@ -2,6 +2,6 @@ package com.cdbd.opensource.presentation.dto;
 
 public record AiSettingsResponse(
     String apiKeyMasked,
-    String maxOutPutTokens,
+    Integer maxOutPutTokens,
     Double temperature
 ) { }

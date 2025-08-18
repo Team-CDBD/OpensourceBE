@@ -1,4 +1,4 @@
-package com.cdbd.opensource.config.redis;
+package com.cdbd.opensource.application.config.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

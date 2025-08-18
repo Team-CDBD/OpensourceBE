@@ -28,3 +28,12 @@ CREATE TABLE topic (
 );
 
 CREATE SEQUENCE topic_seq START 1 INCREMENT BY 50;
+
+CREATE TABLE account (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    account_id VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    authorization VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP
+);

@@ -14,15 +14,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class LLMClient {
 
-  private final ChatClient chatClient;
+  private final AiRuntimeManager runtime;
   private final ObjectMapper objectMapper;
   private final PromptTemplate promptTemplate;
 
   public LLMClient(
-      ChatClient chatClient,
+      AiRuntimeManager runtime,
       ObjectMapper objectMapper,
       @Value("classpath:/prompts/analyze-event-log.txt") Resource promptResource) {
-    this.chatClient = chatClient;
+    this.runtime = runtime;
     this.objectMapper = objectMapper;
     this.promptTemplate = new PromptTemplate(promptResource);
   }
@@ -31,7 +31,7 @@ public class LLMClient {
     try {
       String userMessage = objectMapper.writeValueAsString(eventLog);
       Prompt prompt = promptTemplate.create(Map.of("userMessage", userMessage));
-      String result = chatClient.prompt(prompt).call().content();
+      String result = runtime.client().prompt(prompt).call().content();
       return new LLMResult(result);
 
     } catch (JsonProcessingException e) {

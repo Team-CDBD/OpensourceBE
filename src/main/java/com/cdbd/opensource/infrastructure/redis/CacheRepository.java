@@ -32,7 +32,6 @@ public class CacheRepository {
                 .orElseGet(() -> CacheData.from(request));
 
         CacheDTO dto = new CacheDTO(key, data, ttl);
-        cacheOps.set(dto);
         return Optional.of(dto.toCacheResponse());
     }
 

@@ -32,6 +32,7 @@ class CacheEventListenerTest {
     void handleCacheSaveEvent_이벤트로그를_캐시에_저장() {
         // given
         EventLog eventLog = new EventLog(
+                1L,
                 "TestClass",
                 "testMethod",
                 10,
@@ -61,6 +62,7 @@ class CacheEventListenerTest {
     void handleCacheSaveEvent_빈_futureCalls_처리() {
         // given
         EventLog eventLog = new EventLog(
+                2L,
                 "TestClass",
                 "testMethod",
                 10,

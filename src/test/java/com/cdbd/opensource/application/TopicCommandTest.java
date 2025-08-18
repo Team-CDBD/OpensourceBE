@@ -12,7 +12,7 @@ class TopicCommandTest {
         // given
         TopicCommand command = TopicCommand.builder()
                 .id(1L)
-                .name("test-topic")
+                .topic("test-topic")
                 .description("test description")
                 .build();
 
@@ -21,7 +21,7 @@ class TopicCommandTest {
 
         // then
         assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getName()).isEqualTo("test-topic");
+        assertThat(result.getTopic()).isEqualTo("test-topic");
         assertThat(result.getDescription()).isEqualTo("test description");
     }
 
@@ -29,7 +29,7 @@ class TopicCommandTest {
     void toTopic_ID가_null인경우_처리() {
         // given
         TopicCommand command = TopicCommand.builder()
-                .name("new-topic")
+                .topic("new-topic")
                 .description("new description")
                 .build();
 
@@ -38,7 +38,7 @@ class TopicCommandTest {
 
         // then
         assertThat(result.getId()).isNull();
-        assertThat(result.getName()).isEqualTo("new-topic");
+        assertThat(result.getTopic()).isEqualTo("new-topic");
         assertThat(result.getDescription()).isEqualTo("new description");
     }
 }

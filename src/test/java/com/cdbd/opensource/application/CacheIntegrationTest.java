@@ -19,8 +19,8 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @TestPropertySource(properties = {
-    "spring.redis.host=localhost",
-    "spring.redis.port=6379"
+    "spring.data.redis.host=localhost",
+    "spring.data.redis.port=6379"
 })
 @Transactional
 class CacheIntegrationTest {
@@ -35,6 +35,7 @@ class CacheIntegrationTest {
     void CacheSaveEvent_발행시_CacheEventListener가_처리() {
         // given
         EventLog eventLog = new EventLog(
+                1L,
                 "TestClass",
                 "testMethod",
                 10,
@@ -57,8 +58,8 @@ class CacheIntegrationTest {
     @Test
     void 여러_CacheSaveEvent_연속_발행_처리() {
         // given
-        EventLog eventLog1 = new EventLog("Class1", "method1", 1, "message1", "ERROR", List.of("call1"), "topic1", "result1");
-        EventLog eventLog2 = new EventLog("Class2", "method2", 2, "message2", "WARN", List.of("call2"), "topic2", "result2");
+        EventLog eventLog1 = new EventLog(1L, "Class1", "method1", 1, "message1", "ERROR", List.of("call1"), "topic1", "result1");
+        EventLog eventLog2 = new EventLog(2L, "Class2", "method2", 2, "message2", "WARN", List.of("call2"), "topic2", "result2");
         
         CacheSaveEvent event1 = new CacheSaveEvent(eventLog1);
         CacheSaveEvent event2 = new CacheSaveEvent(eventLog2);

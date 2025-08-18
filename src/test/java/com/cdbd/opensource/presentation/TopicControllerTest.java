@@ -51,7 +51,7 @@ class TopicControllerTest {
     void createTopic_토픽생성_요청처리() throws Exception {
         // given
         TopicRequest request = TopicRequest.builder()
-                .name("test-topic")
+                .topic("test-topic")
                 .description("test description")
                 .build();
 
@@ -68,7 +68,7 @@ class TopicControllerTest {
     void updateTopic_토픽수정_요청처리() throws Exception {
         // given
         TopicRequest request = TopicRequest.builder()
-                .name("test-topic")
+                .topic("test-topic")
                 .description("updated description")
                 .build();
 

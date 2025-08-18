@@ -9,6 +9,8 @@ import com.cdbd.opensource.presentation.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class EventLogFacade {
@@ -19,6 +21,7 @@ public class EventLogFacade {
         EventLog log = command.toEventLog();
 
         if (log.getSeverity().equals("ERROR")) {
+            Optional<EventLog> sameError = service.getSameError(log);
             LLMResult result = llmClient.analyzeEventLog(log);
             log = new EventLog(
                     log.getId(),

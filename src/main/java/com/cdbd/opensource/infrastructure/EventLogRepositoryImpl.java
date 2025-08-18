@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -86,5 +87,23 @@ public class EventLogRepositoryImpl implements EventLogRepository {
                 .totalElements(logEntityPage.getTotalElements())
                 .totalPages(logEntityPage.getTotalPages())
                 .build();
+    }
+
+    @Override
+    public Optional<EventLog> findSameLog(EventLog log) {
+        Optional<EventLogEntity> entity = jpaEventLogRepository.findSameLog(log);
+        if (entity.isEmpty()) return  Optional.empty();
+        EventLog newLog = new EventLog(
+                null,
+                log.getClassName(),
+                log.getMethod(),
+                log.getLine(),
+                log.getMessage(),
+                log.getSeverity(),
+                log.getFutureCalls(),
+                null,
+                entity.get().getResult()
+        );
+        return Optional.of(newLog);
     }
 }

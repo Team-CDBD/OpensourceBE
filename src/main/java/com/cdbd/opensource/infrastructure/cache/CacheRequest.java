@@ -1,5 +1,6 @@
 package com.cdbd.opensource.infrastructure.cache;
 
+import com.cdbd.opensource.domain.EventLog;
 import lombok.Builder;
 
 import java.time.Duration;
@@ -15,4 +16,11 @@ public record CacheRequest(
         List<String> futureCalls,
         Duration ttl
 ) {
+    public static CacheRequest fromEventLog(EventLog log) {
+        return CacheRequest.builder()
+                .className(log.getClassName())
+                .method(log.getMethod())
+                .futureCalls(log.getFutureCalls())
+                .build();
+    }
 }

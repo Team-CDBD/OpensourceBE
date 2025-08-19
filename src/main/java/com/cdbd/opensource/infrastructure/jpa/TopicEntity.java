@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Entity
@@ -29,6 +32,14 @@ public class TopicEntity {
             columnDefinition = "TEXT"
     )
     private String description;
+
+    @Column(
+            name = "created_at",
+            columnDefinition = "timestamp",
+            updatable = false
+    )
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     public Topic toTopic() {
         return new Topic(

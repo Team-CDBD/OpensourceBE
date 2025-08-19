@@ -11,6 +11,7 @@ public record CacheResponse(
         int line,
         String message,
         String severity,
-        List<String> futureCalls
+        List<String> futureCalls,
+        String result
 ) {
 }

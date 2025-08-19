@@ -8,7 +8,8 @@ import java.util.List;
 public record CacheData(
         String message,
         String severity,
-        List<String> futureCalls
+        List<String> futureCalls,
+        String result
 ) {
     public static CacheData from (CacheRequest request) {
         return CacheData.builder()

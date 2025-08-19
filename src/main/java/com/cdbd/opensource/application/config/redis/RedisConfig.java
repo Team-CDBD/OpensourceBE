@@ -1,4 +1,4 @@
-package com.cdbd.opensource.config.redis;
+package com.cdbd.opensource.application.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

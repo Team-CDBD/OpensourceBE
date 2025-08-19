@@ -47,6 +47,8 @@ public class TopicRepositoryImpl implements TopicRepository {
 
     @Override
     public void update(Topic topic) {
+        Optional<TopicEntity> existingTopicOptional = topicRepository.findById(topic.getId());
+        if (existingTopicOptional.isEmpty()) return;
         TopicEntity entity = new TopicEntity();
         entity.setId(topic.getId());
         entity.setTopic(topic.getTopic());
@@ -68,6 +70,7 @@ public class TopicRepositoryImpl implements TopicRepository {
     @Override
     public void delete(Long id) {
         Optional<TopicEntity> entity = topicRepository.findById(id);
+        if (entity.isEmpty()) return;
         topicRepository.delete(entity.get());
     }
 }

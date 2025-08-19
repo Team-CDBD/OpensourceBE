@@ -8,7 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import java.util.concurrent.CompletableFuture;
+
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -43,6 +44,8 @@ class DlqSchedulerTest {
         // given
         String failedMessage = "{\"originalTopic\":\"test-topic\",\"message\":\"test\",\"retryCount\":2,\"failureReason\":\"error\",\"failureTimestamp\":123456789}";
         scheduler.listenDlq(failedMessage);
+        when(kafkaTemplate.send(any(String.class), any(String.class)))
+                .thenReturn(CompletableFuture.completedFuture(null));
 
         // when
         scheduler.retryFailedMessages();

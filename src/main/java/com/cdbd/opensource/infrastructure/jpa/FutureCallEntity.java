@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "future_call")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder

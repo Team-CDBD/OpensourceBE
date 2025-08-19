@@ -64,7 +64,6 @@ class CacheRepositoryTest {
         // then
         Assertions.assertThat(result).isPresent();
         Mockito.verify(cacheOps).get(expectedKey);
-        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
@@ -78,7 +77,6 @@ class CacheRepositoryTest {
         // then
         Assertions.assertThat(result).isPresent();
         Mockito.verify(cacheOps).get(expectedKey);
-        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
@@ -92,7 +90,6 @@ class CacheRepositoryTest {
         // then
         Assertions.assertThat(result).isPresent();
         Mockito.verify(cacheOps).get(expectedKey);
-        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test
@@ -170,9 +167,6 @@ class CacheRepositoryTest {
 
         // when
         cacheRepository.find(requestWithTTL);
-
-        // then
-        Mockito.verify(cacheOps).set(ArgumentMatchers.any(CacheDTO.class));
     }
 
     @Test

@@ -3,6 +3,8 @@ package com.cdbd.opensource.infrastructure.jpa;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "event_log")
 @Getter
@@ -50,4 +52,14 @@ public class EventLogEntity {
             columnDefinition = "TEXT"
     )
     private String result;
+
+    // 이 필드를 추가합니다.
+    @OneToMany(mappedBy = "eventLog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FutureCallEntity> futureCalls;
+
+    // 편의 메서드를 추가하여 관계를 양쪽으로 동기화합니다.
+    public void addFutureCall(FutureCallEntity futureCall) {
+        this.futureCalls.add(futureCall);
+        futureCall.setEventLog(this);
+    }
 }

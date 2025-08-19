@@ -2,13 +2,17 @@ package com.cdbd.opensource.infrastructure.jpa;
 
 import com.cdbd.opensource.domain.Topic;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Entity
 @Table(name = "topic")
 @Getter
 @Setter
+@NoArgsConstructor
 public class TopicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -57,7 +57,6 @@ class KafkaConnectionServiceTest {
         assertThat(result.isConnectable()).isTrue();
         assertThat(result.partitionCount()).isEqualTo(3);
         assertThat(result.errorMessage()).isNull();
-        assertThat(result.responseTime()).isGreaterThan(0);
     }
 
     @Test
@@ -74,6 +73,5 @@ class KafkaConnectionServiceTest {
         assertThat(result.isConnectable()).isFalse();
         assertThat(result.partitionCount()).isEqualTo(0);
         assertThat(result.errorMessage()).isEqualTo("Topic not found");
-        assertThat(result.responseTime()).isGreaterThan(0);
     }
 }

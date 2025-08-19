@@ -31,7 +31,7 @@ class DynamicMessageListenerTest {
     void send_메시지를_받으면_EventLogFacade를_호출한다() {
         // given
         String topic = "test-topic";
-        EventLog eventLog = new EventLog("TestClass", "testMethod", 10, "test message", "INFO", List.of(), topic, "");
+        EventLog eventLog = new EventLog(null, "TestClass", "testMethod", 10, "test message", "INFO", List.of(), topic, "");
 
         // when
         listener.send(topic, eventLog);

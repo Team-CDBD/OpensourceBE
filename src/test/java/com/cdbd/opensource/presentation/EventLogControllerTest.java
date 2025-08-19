@@ -5,9 +5,9 @@ import com.cdbd.opensource.application.EventLogFacade;
 import com.cdbd.opensource.domain.EventLog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,7 +24,7 @@ class EventLogControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private EventLogFacade eventLogFacade;
 
     @Autowired
@@ -34,6 +34,7 @@ class EventLogControllerTest {
     void saveEventLog_이벤트로그_저장요청_처리() throws Exception {
         // given
         EventLog eventLog = new EventLog(
+                null,
                 "TestClass",
                 "testMethod",
                 10,

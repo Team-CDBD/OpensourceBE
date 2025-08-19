@@ -12,9 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TopicServiceTest {
@@ -42,7 +41,13 @@ class TopicServiceTest {
                 .direction("asc")
                 .build();
         
-        PageResponseDto<Topic> expectedResponse = new PageResponseDto<>(List.of(), 0, 0, 0, 0);
+        PageResponseDto<Topic> expectedResponse = PageResponseDto.<Topic>builder()
+                .content(List.of())
+                .currentPage(0)
+                .pageSize(0)
+                .totalElements(0)
+                .totalPages(0)
+                .build();
         when(topicRepository.getTopics(pageRequest)).thenReturn(expectedResponse);
 
         // when
@@ -56,7 +61,7 @@ class TopicServiceTest {
     @Test
     void createTopic_토픽을_레포지토리에_저장() {
         // given
-        Topic topic = new Topic(1L, "test-topic", "test description");
+        Topic topic = new Topic(1L, "test-topic", 1,"test description");
 
         // when
         service.createTopic(topic);
@@ -68,7 +73,7 @@ class TopicServiceTest {
     @Test
     void updateTopic_토픽을_레포지토리에_업데이트() {
         // given
-        Topic topic = new Topic(1L, "test-topic", "updated description");
+        Topic topic = new Topic(1L, "test-topic", 1, "updated description");
 
         // when
         service.updateTopic(topic);

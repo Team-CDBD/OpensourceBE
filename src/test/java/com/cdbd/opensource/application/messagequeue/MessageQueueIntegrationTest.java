@@ -5,15 +5,16 @@ import com.cdbd.opensource.domain.EventLog;
 import com.cdbd.opensource.infrastructure.TopicRepositoryImpl;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(properties = {
@@ -23,13 +24,13 @@ import static org.mockito.Mockito.*;
 })
 class MessageQueueIntegrationTest {
 
-    @MockBean
+    @Mock
     private TopicRepositoryImpl dynamicSubscriptionRepository;
     
-    @MockBean
+    @Mock
     private EventLogFacade eventLogFacade;
     
-    @MockBean
+    @Mock
     private KafkaConsumer<String, Object> kafkaConsumer;
 
     @Test
@@ -38,7 +39,7 @@ class MessageQueueIntegrationTest {
         when(dynamicSubscriptionRepository.findAllTopics()).thenReturn(Set.of("test-topic"));
         
         DynamicMessageListener listener = new DynamicMessageListener(eventLogFacade);
-        EventLog eventLog = new EventLog("TestClass", "testMethod", 10, "test message", "INFO", List.of(), "test-topic", "");
+        EventLog eventLog = new EventLog(null, "TestClass", "testMethod", 10, "test message", "INFO", List.of(), "test-topic", "");
 
         // when
         listener.send("test-topic", eventLog);

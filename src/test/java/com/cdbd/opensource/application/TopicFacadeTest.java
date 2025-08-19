@@ -15,8 +15,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TopicFacadeTest {
@@ -40,8 +40,16 @@ class TopicFacadeTest {
                 .sortBy("id")
                 .direction("asc")
                 .build();
-        
-        PageResponseDto<Topic> expectedResponse = new PageResponseDto<>(List.of(), 0, 0, 0, 0);
+
+        PageResponseDto<Topic> expectedResponse;
+        expectedResponse = PageResponseDto.<Topic>builder()
+                .content(List.of())
+                .currentPage(0)
+                .pageSize(0)
+                .totalElements(0)
+                .totalPages(0)
+                .build();
+
         when(topicService.getTopics(pageRequest)).thenReturn(expectedResponse);
 
         // when
@@ -56,7 +64,7 @@ class TopicFacadeTest {
     void createTopic_토픽커맨드를_서비스에_전달() {
         // given
         TopicCommand command = TopicCommand.builder()
-                .name("test-topic")
+                .topic("test-topic")
                 .description("test description")
                 .build();
 
@@ -71,7 +79,7 @@ class TopicFacadeTest {
     void updateTopic_토픽커맨드를_서비스에_전달() {
         // given
         TopicCommand command = TopicCommand.builder()
-                .name("test-topic")
+                .topic("test-topic")
                 .description("updated description")
                 .build();
 
@@ -105,7 +113,7 @@ class TopicFacadeTest {
                 .partitionCount(3)
                 .errorMessage(null)
                 .build();
-        
+
         when(topicService.testTopicConnection(topicName)).thenReturn(expectedResult);
 
         // when

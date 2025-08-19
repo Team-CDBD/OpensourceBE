@@ -31,7 +31,7 @@ class EventLogIntegrationTest {
     @Test
     void EventLog_전체플로우_통합테스트() {
         // given
-        EventLog eventLog = new EventLog("TestClass", "testMethod", 10, "error message", "ERROR", List.of("call1"), "original-topic", "");
+        EventLog eventLog = new EventLog(null,"TestClass", "testMethod", 10, "error message", "ERROR", List.of("call1"), "original-topic", "");
         EventLogCommand command = EventLogCommand.builder()
                 .topic("test-topic")
                 .eventLog(eventLog)
@@ -51,7 +51,7 @@ class EventLogIntegrationTest {
     @Test
     void INFO로그_LLM분석없이_저장() {
         // given
-        EventLog eventLog = new EventLog("TestClass", "testMethod", 10, "info message", "INFO", List.of(), "original-topic", "");
+        EventLog eventLog = new EventLog(null, "TestClass", "testMethod", 10, "info message", "INFO", List.of(), "original-topic", "");
         EventLogCommand command = EventLogCommand.builder()
                 .topic("test-topic")
                 .eventLog(eventLog)

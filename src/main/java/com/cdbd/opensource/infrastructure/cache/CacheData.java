@@ -16,6 +16,7 @@ public record CacheData(
                 .message(request.message())
                 .severity(request.severity())
                 .futureCalls(request.futureCalls())
+                .result(request.result())
                 .build();
     }
 }

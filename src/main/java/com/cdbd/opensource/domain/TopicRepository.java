@@ -1,0 +1,17 @@
+package com.cdbd.opensource.domain;
+
+import com.cdbd.opensource.presentation.PageRequestDto;
+import com.cdbd.opensource.presentation.PageResponseDto;
+
+import java.util.Set;
+
+public interface TopicRepository {
+    Set<String> findAllTopics();
+    PageResponseDto<Topic> getTopics(PageRequestDto pageRequest);
+
+    void update(Topic topic);
+
+    void save(Topic topic);
+
+    void delete(Long id);
+}

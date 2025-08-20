@@ -1,6 +1,6 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.cache;
 
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

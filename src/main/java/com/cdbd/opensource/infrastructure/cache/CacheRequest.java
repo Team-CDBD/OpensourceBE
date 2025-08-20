@@ -1,6 +1,6 @@
 package com.cdbd.opensource.infrastructure.cache;
 
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import lombok.Builder;
 
 import java.time.Duration;

@@ -1,7 +1,7 @@
 package com.cdbd.opensource.infrastructure.jpa;
 
 
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

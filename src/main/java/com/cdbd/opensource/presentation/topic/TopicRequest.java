@@ -1,6 +1,6 @@
-package com.cdbd.opensource.presentation;
+package com.cdbd.opensource.presentation.topic;
 
-import com.cdbd.opensource.application.TopicCommand;
+import com.cdbd.opensource.application.topic.TopicCommand;
 import lombok.Builder;
 
 @Builder

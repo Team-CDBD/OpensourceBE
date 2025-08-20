@@ -1,6 +1,6 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.topic;
 
-import com.cdbd.opensource.domain.Topic;
+import com.cdbd.opensource.domain.topic.Topic;
 import lombok.Builder;
 
 @Builder

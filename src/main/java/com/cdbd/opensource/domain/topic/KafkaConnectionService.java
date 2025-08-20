@@ -1,6 +1,6 @@
-package com.cdbd.opensource.domain;
+package com.cdbd.opensource.domain.topic;
 
-import com.cdbd.opensource.presentation.ConnectionTestResult;
+import com.cdbd.opensource.presentation.topic.ConnectionTestResult;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;

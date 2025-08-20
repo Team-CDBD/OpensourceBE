@@ -1,6 +1,6 @@
 package com.cdbd.opensource.application.messagequeue;
 
-import com.cdbd.opensource.domain.TopicRepository;
+import com.cdbd.opensource.domain.topic.TopicRepository;
 import com.cdbd.opensource.infrastructure.TopicRepositoryImpl;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.stereotype.Component;

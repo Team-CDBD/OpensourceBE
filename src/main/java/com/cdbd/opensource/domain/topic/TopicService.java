@@ -1,8 +1,8 @@
-package com.cdbd.opensource.domain;
+package com.cdbd.opensource.domain.topic;
 
-import com.cdbd.opensource.presentation.ConnectionTestResult;
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.presentation.topic.ConnectionTestResult;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

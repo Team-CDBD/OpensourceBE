@@ -1,6 +1,6 @@
 package com.cdbd.opensource.infrastructure.jpa;
 
-import com.cdbd.opensource.domain.Topic;
+import com.cdbd.opensource.domain.topic.Topic;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

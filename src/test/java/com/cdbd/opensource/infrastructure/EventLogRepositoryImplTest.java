@@ -1,6 +1,6 @@
 package com.cdbd.opensource.infrastructure;
 
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import com.cdbd.opensource.infrastructure.jpa.EventLogEntity;
 import com.cdbd.opensource.infrastructure.jpa.JpaEventLogRepository;
 import com.cdbd.opensource.infrastructure.jpa.JpaFutureCallRepository;

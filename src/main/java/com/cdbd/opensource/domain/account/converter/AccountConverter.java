@@ -1,10 +1,12 @@
 package com.cdbd.opensource.domain.account.converter;
 
-import java.time.Instant;
-
 import com.cdbd.opensource.domain.account.Account;
 import com.cdbd.opensource.infrastructure.jpa.entity.AccountEntity;
+import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
+@Component
 public class AccountConverter {
 	
 	// AccountEntity -> Account 변환

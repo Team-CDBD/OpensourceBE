@@ -1,7 +1,9 @@
-package com.cdbd.opensource.presentation;
+package com.cdbd.opensource.presentation.topic;
 
-import com.cdbd.opensource.application.TopicFacade;
-import com.cdbd.opensource.domain.Topic;
+import com.cdbd.opensource.application.topic.TopicFacade;
+import com.cdbd.opensource.domain.topic.Topic;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

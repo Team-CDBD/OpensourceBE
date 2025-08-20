@@ -1,7 +1,7 @@
-package com.cdbd.opensource.domain;
+package com.cdbd.opensource.domain.topic;
 
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 
 import java.util.Set;
 

@@ -1,11 +1,11 @@
 package com.cdbd.opensource.infrastructure;
 
-import com.cdbd.opensource.domain.Topic;
-import com.cdbd.opensource.domain.TopicRepository;
+import com.cdbd.opensource.domain.topic.Topic;
+import com.cdbd.opensource.domain.topic.TopicRepository;
 import com.cdbd.opensource.infrastructure.jpa.JpaTopicRepository;
 import com.cdbd.opensource.infrastructure.jpa.TopicEntity;
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

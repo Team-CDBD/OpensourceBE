@@ -2,7 +2,7 @@ package com.cdbd.opensource.application.messagequeue;
 
 import com.cdbd.opensource.application.EventLogCommand;
 import com.cdbd.opensource.application.EventLogFacade;
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

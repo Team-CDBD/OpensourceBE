@@ -1,6 +1,6 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.cache;
 
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import com.cdbd.opensource.infrastructure.cache.CacheRequest;
 import com.cdbd.opensource.infrastructure.redis.CacheRepository;
 import lombok.RequiredArgsConstructor;

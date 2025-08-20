@@ -1,5 +1,8 @@
 package com.cdbd.opensource.domain;
 
+import com.cdbd.opensource.domain.eventlog.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLogRepository;
+import com.cdbd.opensource.domain.eventlog.EventLogService;
 import com.cdbd.opensource.infrastructure.redis.CacheRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

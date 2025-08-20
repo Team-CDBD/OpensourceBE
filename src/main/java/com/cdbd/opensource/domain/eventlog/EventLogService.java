@@ -1,10 +1,10 @@
-package com.cdbd.opensource.domain;
+package com.cdbd.opensource.domain.eventlog;
 
 import com.cdbd.opensource.infrastructure.cache.CacheRequest;
 import com.cdbd.opensource.infrastructure.cache.CacheResponse;
 import com.cdbd.opensource.infrastructure.redis.CacheRepository;
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

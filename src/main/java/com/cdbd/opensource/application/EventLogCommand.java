@@ -1,6 +1,6 @@
 package com.cdbd.opensource.application;
 
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import lombok.Builder;
 
 @Builder

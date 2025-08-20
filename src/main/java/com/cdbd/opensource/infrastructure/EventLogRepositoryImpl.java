@@ -1,13 +1,13 @@
 package com.cdbd.opensource.infrastructure;
 
-import com.cdbd.opensource.domain.EventLog;
-import com.cdbd.opensource.domain.EventLogRepository;
+import com.cdbd.opensource.domain.eventlog.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLogRepository;
 import com.cdbd.opensource.infrastructure.jpa.EventLogEntity;
 import com.cdbd.opensource.infrastructure.jpa.FutureCallEntity;
 import com.cdbd.opensource.infrastructure.jpa.JpaEventLogRepository;
 import com.cdbd.opensource.infrastructure.jpa.JpaFutureCallRepository;
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

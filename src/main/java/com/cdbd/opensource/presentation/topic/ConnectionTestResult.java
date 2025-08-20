@@ -1,4 +1,4 @@
-package com.cdbd.opensource.presentation;
+package com.cdbd.opensource.presentation.topic;
 
 import lombok.Builder;
 

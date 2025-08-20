@@ -1,10 +1,10 @@
-package com.cdbd.opensource.application;
+package com.cdbd.opensource.application.topic;
 
-import com.cdbd.opensource.domain.Topic;
-import com.cdbd.opensource.domain.TopicService;
-import com.cdbd.opensource.presentation.ConnectionTestResult;
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.domain.topic.Topic;
+import com.cdbd.opensource.domain.topic.TopicService;
+import com.cdbd.opensource.presentation.topic.ConnectionTestResult;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

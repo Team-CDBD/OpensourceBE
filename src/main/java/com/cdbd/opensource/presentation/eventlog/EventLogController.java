@@ -1,7 +1,7 @@
-package com.cdbd.opensource.presentation;
+package com.cdbd.opensource.presentation.eventlog;
 
 import com.cdbd.opensource.application.EventLogFacade;
-import com.cdbd.opensource.domain.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

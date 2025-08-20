@@ -1,8 +1,12 @@
 package com.cdbd.opensource.domain;
 
-import com.cdbd.opensource.presentation.ConnectionTestResult;
-import com.cdbd.opensource.presentation.PageRequestDto;
-import com.cdbd.opensource.presentation.PageResponseDto;
+import com.cdbd.opensource.domain.topic.KafkaConnectionService;
+import com.cdbd.opensource.domain.topic.Topic;
+import com.cdbd.opensource.domain.topic.TopicRepository;
+import com.cdbd.opensource.domain.topic.TopicService;
+import com.cdbd.opensource.presentation.topic.ConnectionTestResult;
+import com.cdbd.opensource.presentation.eventlog.PageRequestDto;
+import com.cdbd.opensource.presentation.eventlog.PageResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

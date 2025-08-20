@@ -1,6 +1,7 @@
 package com.cdbd.opensource.domain;
 
-import com.cdbd.opensource.presentation.ConnectionTestResult;
+import com.cdbd.opensource.domain.topic.KafkaConnectionService;
+import com.cdbd.opensource.presentation.topic.ConnectionTestResult;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;
 import org.apache.kafka.clients.admin.TopicDescription;

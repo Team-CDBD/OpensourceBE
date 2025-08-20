@@ -1,4 +1,4 @@
-package com.cdbd.opensource.domain;
+package com.cdbd.opensource.domain.eventlog;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

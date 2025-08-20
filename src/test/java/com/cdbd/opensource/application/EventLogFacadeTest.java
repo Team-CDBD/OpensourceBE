@@ -1,7 +1,7 @@
 package com.cdbd.opensource.application;
 
-import com.cdbd.opensource.domain.EventLog;
-import com.cdbd.opensource.domain.EventLogService;
+import com.cdbd.opensource.domain.eventlog.EventLog;
+import com.cdbd.opensource.domain.eventlog.EventLogService;
 import com.cdbd.opensource.infrastructure.llm.LLMClient;
 import com.cdbd.opensource.infrastructure.llm.LLMResult;
 import org.junit.jupiter.api.BeforeEach;

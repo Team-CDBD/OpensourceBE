@@ -1,19 +1,11 @@
 package com.cdbd.opensource.infrastructure.jpa.entity;
 
-import java.time.Instant;
-
 import com.cdbd.opensource.domain.account.Auth;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "account")
@@ -32,7 +24,7 @@ public class AccountEntity extends BaseEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "authorization", nullable = false)
+    @Column(name = "auth", nullable = false)
     private Auth authorization;
     
     // Getter, Setter

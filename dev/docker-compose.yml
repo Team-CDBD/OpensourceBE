@@ -13,5 +13,83 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis-local
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  kafka-1:
+    container_name: kafka-1
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./data/kafka-1:/var/lib/kafka/data
+    networks:
+      - kafka-net
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-1:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENERS: INTERNAL://:29092,CONTROLLER://:29093,EXTERNAL://0.0.0.0:9092
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:29093,2@kafka-2:29094,3@kafka-3:29095
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      CLUSTER_ID: "clusterid"
+
+  kafka-2:
+    container_name: kafka-2
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./data/kafka-2:/var/lib/kafka/data
+    networks:
+      - kafka-net
+    environment:
+      KAFKA_NODE_ID: 2
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-2:29092,EXTERNAL://localhost:9093 # 내부 통신 포트 29092로 수정
+      KAFKA_LISTENERS: INTERNAL://:29092,CONTROLLER://:29094,EXTERNAL://0.0.0.0:9093 # 컨트롤러 리스너 주소 수정
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:29093,2@kafka-2:29094,3@kafka-3:29095
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      CLUSTER_ID: "clusterid"
+    depends_on:
+      - kafka-1
+
+  kafka-3:
+    container_name: kafka-3
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9094:9094"
+    volumes:
+      - ./data/kafka-3:/var/lib/kafka/data
+    networks:
+      - kafka-net
+    environment:
+      KAFKA_NODE_ID: 3
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-3:29092,EXTERNAL://localhost:9094 # 내부 통신 포트 29092로 수정
+      KAFKA_LISTENERS: INTERNAL://:29092,CONTROLLER://:29095,EXTERNAL://0.0.0.0:9094 # 컨트롤러 리스너 주소 수정
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:29093,2@kafka-2:29094,3@kafka-3:29095
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      CLUSTER_ID: "clusterid"
+    depends_on:
+      - kafka-1
+      - kafka-2
+
 volumes:
   pgdata:
+  redisdata:
+
+networks:
+  kafka-net:
+    driver: bridge

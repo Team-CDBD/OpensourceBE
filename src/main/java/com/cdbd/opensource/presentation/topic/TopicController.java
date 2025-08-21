@@ -8,30 +8,35 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000") // 이 컨트롤러의 모든 메서드에 적용
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/config/kafka")
 public class TopicController {
     private final TopicFacade facade;
 
-    @GetMapping("/topics")
+    @GetMapping(value = "/topics", produces = "application/json")
     public ResponseEntity<PageResponseDto<Topic>> getTopics(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        PageRequestDto pageRequest = PageRequestDto.builder()
-                .page(page)
-                .size(size)
-                .sortBy(sortBy)
-                .direction(direction)
-                .build();
+        try {
+            PageRequestDto pageRequest = PageRequestDto.builder()
+                    .page(page)
+                    .size(size)
+                    .sortBy(sortBy)
+                    .direction(direction)
+                    .build();
 
-        System.out.println(pageRequest);
+            PageResponseDto<Topic> dto = facade.getTopics(pageRequest);
 
-        return ResponseEntity.ok(facade.getTopics(pageRequest));
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            // 예외가 발생하면 로그를 출력하고, 적절한 에러 응답을 반환
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @PutMapping("/update")
